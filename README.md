@@ -12,55 +12,64 @@
     <li>Существуют два режима: queue, topic.</li>
     <li>В коде не должно быть синхронизации. Все нужно сделать на Executors и conccurent коллекциях.</li>
 </ul>
-<h4>Queue</h4>
+
+<h2>Технологии</h2>
+<ul>
+    <li>Java Concurrency (классы из пакета java.util.concurrent)</li>
+    <li>Sockets</li>
+    <li>Java IO</li>
+    <li>Библиотека GSON</li>
+</ul>
+
+<h2>Queue</h2>
 <p>
     Отправитель посылает сообщение с указанием очереди.<br>
     Получатель читает первое сообщение и удаляет его из очереди. <br>
     Если приходят несколько получателей, то они читают из одной очереди. <br>
     Уникальное сообщение может быть прочитано, только одним получателем.
 </p>
+<h4>Отправить данные в очередь</h4>
 <p>
-    <strong>Примеры запросов:</strong><br>
-</p>
+    Producer отправляет на сервер запрос вида:
+    <pre><code>{
+    "action": "POST",
+    "mode": "queue",
+    "key": "weather",
+    "text": "temperature +18 C"
+}</code></pre>
+    в очередь weather будет добавлено сообщение "temperature +18 C"<br>
+<h4>Получить данные из очереди</h4>
 <p>
-    POST
-    <pre><code>http://localhost:9000/queue?data=msg</code></pre>
-    в очередь queue будет добавлено сообщение "msg"<br><br>
-<p>
-    GET 
-    <pre><code>http://localhost:9000/queue/weather</code></pre>
-    из очереди queue будет извлечено одно сообщение
-<h4>Topic</h4>
+    Consumer отправляет на сервер запрос вида:
+    <pre><code>{
+    "action": "GET",
+    "mode": "queue",
+    "key": "weather"
+}</code></pre>
+    из очереди weather будет извлечено одно сообщение и доставлено потребителю<br>
+
+<h2>Topic</h2>
 <p>
     Отправить посылает сообщение с указанием темы.<br>
     Получатель читает первое сообщение и удаляет его из очереди. <br>
     Если приходят несколько получателей, то они читают отдельные очереди.
 </p>
+<h4>Отправить данные в topic</h4>
 <p>
-    <strong>Примеры запросов:</strong><br>
-</p>
+    Producer отправляет на сервер запрос вида:
+    <pre><code>{
+    "action": "POST",
+    "mode": "topic",
+    "key": "weather",
+    "text": "temperature +18 C"
+}</code></pre>
+    в подходящие для ключа weather топики будет добавлено сообщение "temperature +18 C"<br>
+<h4>Получить данные из topic</h4>
 <p>
-    POST
-    <pre><code>http://localhost:9000/topic?data=msg</code></pre>
-    в очередь topic будет добавлено сообщение "msg"<br><br>
-<p>
-    GET 
-    <pre><code>http://localhost:9000/topic/weather</code></pre>
-    из очереди topic будет извлечено одно сообщение
-
-<h2>Использованные средства</h2>
-<p><a href="https://www.oracle.com/java/technologies/javase-jdk15-downloads.html">Open JDK 14</a> - компилятор\интерпритатор</p>
-<p><a href="http://maven.apache.org/index.html">Maven</a> - сборка и управление проектом</p>
-
-<h2>Компиляция</h2>
-<pre>
-<code>$ cd job4j_pooh
-$ mvn package</code>
-</pre>
-Появится папка target, a в ней файл pooh.jar
-
-<h2>Запуск</h2>
-<pre>
-<code>$ java -jar pooh.jar</code>
-</pre>
-<p>После запуска программы результат можно посмотреть в браузере, выполнив запросы из раздела "Техническое задание"</p>
+    Consumer отправляет на сервер запрос вида:
+    <pre><code>{
+    "action": "GET",
+    "mode": "topic",
+    "key": "weather"
+}</code></pre>
+    из подходящего топика будет извлечено одно сообщение и доставлено потребителю<br>
