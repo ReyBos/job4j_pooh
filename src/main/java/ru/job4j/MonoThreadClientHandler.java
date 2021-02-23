@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class MonoThreadClientHandler implements Runnable {
-    private static final Logger LOG = LoggerFactory.getLogger(MonoThreadClientHandler.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(
+            MonoThreadClientHandler.class.getName()
+    );
     private final Socket socket;
     private Broker broker;
 
