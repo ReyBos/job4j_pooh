@@ -12,6 +12,9 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.Properties;
 
+/**
+ * Тестовый класс для демонстрации производителя сообщений.
+ */
 public class Producer implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(Producer.class.getName());
     private final Socket socket;
@@ -40,8 +43,8 @@ public class Producer implements Runnable {
             json.addProperty("text", "temperature +18 C");
             out.writeUTF(json.toString());
             out.flush();
-            JsonObject resp = new Gson().fromJson(in.readUTF(), JsonObject.class);
-            LOG.debug(resp.get("text").getAsString());
+            JsonObject response = new Gson().fromJson(in.readUTF(), JsonObject.class);
+            LOG.debug(response.get("text").getAsString());
         } catch (IOException e) {
             LOG.error("Ошибка ", e);
         }

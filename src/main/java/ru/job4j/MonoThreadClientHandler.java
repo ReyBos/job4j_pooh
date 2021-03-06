@@ -10,6 +10,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Преобразует поступивший на сервер запрос в JsonObject, отправляет его в
+ * брокер сообщений (Broker), где происходит его обработка. Клиент в ответ получает JsonObject
+ */
 public class MonoThreadClientHandler implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(
             MonoThreadClientHandler.class.getName()
@@ -27,10 +31,10 @@ public class MonoThreadClientHandler implements Runnable {
         try (DataOutputStream out = new DataOutputStream(socket.getOutputStream());
              DataInputStream in = new DataInputStream(socket.getInputStream());
              socket) {
-            JsonObject req = new Gson().fromJson(in.readUTF(), JsonObject.class);
-            JsonObject resp = broker.process(req);
-            LOG.debug(resp.toString());
-            out.writeUTF(resp.toString());
+            JsonObject request = new Gson().fromJson(in.readUTF(), JsonObject.class);
+            JsonObject response = broker.process(request);
+            LOG.debug(response.toString());
+            out.writeUTF(response.toString());
         } catch (IOException e) {
             LOG.error("Ошибка ", e);
         }

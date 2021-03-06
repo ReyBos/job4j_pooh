@@ -10,6 +10,12 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Этот сервер служит для передачи сообщений между клиентами различными способами.
+ * Клиентом может быть производитель (Producer) и потребитель (Consumer) сообщений.
+ * Сервер ждет подлкючение клиентов и обрабатывает каждый запрос в отдельном потоке, для этого
+ * создается новый объект типа MonoThreadClientHandler.
+ */
 public class Server {
     private static final Logger LOG = LoggerFactory.getLogger(Server.class.getName());
     private static final ExecutorService POOL = Executors.newCachedThreadPool();
